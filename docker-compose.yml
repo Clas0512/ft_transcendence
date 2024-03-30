@@ -1,0 +1,99 @@
+version: '3'
+
+networks:
+  nw:
+    driver: bridge
+
+services:
+  api42:
+    container_name: api42
+    build: ./Api42
+    entrypoint: /entrypoint.sh
+    command: uvicorn ApiMain.asgi:application --host 0.0.0.0 --port 8080 --reload
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER_API=${POSTGRES_USER_API}
+      - POSTGRES_DB_API=${POSTGRES_DB_API}
+      - POSTGRES_HOST_API=${POSTGRES_HOST_API}
+      - JWT_SIGNKEY=${JWT_SIGNKEY}
+      - POSTGRES_PORT_API=${POSTGRES_PORT_API}
+    volumes:
+      - ./Api42:/code
+      - ./images:/code/images
+    ports:
+      - "8080:8080"
+    networks:
+      - nw
+    depends_on:
+      - dbapi
+
+  backend:
+    container_name: backend
+    build: ./Backend
+    command: uvicorn Backend.asgi:application --host 0.0.0.0 --port 9191 --reload
+    entrypoint: /entrypoint.sh
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER_BACKEND=${POSTGRES_USER_BACKEND}
+      - POSTGRES_DB_BACKEND=${POSTGRES_DB_BACKEND}
+      - POSTGRES_HOST_BACKEND=${POSTGRES_HOST_BACKEND}
+      - POSTGRES_PORT_BACKEND=${POSTGRES_PORT_BACKEND}
+    volumes:
+      - ./Backend:/code
+    ports:
+      - "9191:9191"
+    depends_on:
+      - dbbackend
+    networks:
+      - nw
+
+  nginx:
+    build: ./frontend
+    container_name: frontend
+    command: /bin/sh -c "nginx -g 'daemon off;'"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./frontend/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./images:/usr/share/nginx/html/static/pofiles/image/
+      - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
+      - /etc/letsencrypt/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
+    depends_on:
+      - backend
+    networks:
+      - nw
+
+  dbbackend:
+    image: postgres:latest
+    container_name: dbbackend
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER_BACKEND}
+      - POSTGRES_DB=${POSTGRES_DB_BACKEND}
+    volumes:
+      - ./init/init-backend:/docker-entrypoint-initdb.d
+      - postgres_data_backend:/var/lib/postgresql/data
+    ports: 
+      - "5433:5432"
+    networks:
+      - nw
+
+  dbapi:
+    image: postgres:latest
+    container_name: dbapi42
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER_API}
+      - POSTGRES_DB=${POSTGRES_DB_API}
+    volumes:
+      - ./init/init-api42:/docker-entrypoint-initdb.d
+      - postgres_data_api:/var/lib/postgresql/data
+    ports:
+      - "5431:5432"
+    networks:
+      - nw
+
+volumes:
+  postgres_data_backend:
+  postgres_data_api:

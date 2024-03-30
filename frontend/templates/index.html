@@ -1,0 +1,690 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>PongJungle</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="/static/assets/bootstrap/css/bootstrap.min.css" />
+	<noscript>
+		<link rel="stylesheet" href="/static/assets/css/noscript.css" />
+	</noscript>
+	<script src="/static/assets/js/animations.js"></script>
+	<script src="/static/assets/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/static/assets/css/main.css" />
+	<script type="text/javascript">
+		var penguinImagePath = "/static/images/penguin_826963.png";
+		var penguin2ImagePath = "/static/images/penguin.png";
+	</script>
+
+</head>
+
+<body class="is-preload">
+	<!-- Messages -->
+	<!-- {% for message in messages %}
+			{% if 'signup' in message.tags %}
+				<div class="alert alert-{{ message.tags }}">
+					{{ message }}
+				</div>
+			{% endif %}
+		{% endfor %} -->
+	<!-- Wrapper -->
+	<div id="wrapper">
+		<!--<div class="chat row" id="chat">
+			
+			<div class="dropdown">
+				<button type="button" class="btn btn-info chatMain" id="chatMain"><img class="img-fluid"
+					style="pointer-events: none;" src="https://peng.com.tr/static/images/Chat-Icon.png">
+				</button>
+				
+				<ul class="dropdown-menu notifications" style="opacity: 0;" role="menu" aria-labelledby="dLabel">
+				  
+				  <div class="notification-heading"><h4 class="menu-title">Notification</h4>
+				  </div>
+				  <li class="divider"></li>
+				 <div class="notifications-wrapper">
+				   <a class="content" href="#">
+					
+					 <div class="notification-item">
+					  <h4 class="item-title">Evaluation Deadline 1 · day ago</h4>
+					  <p class="item-info">Marketing 101, Video Assignment</p>
+					</div>
+					 
+				  </a>
+				 </div>
+				
+			  </div>
+		</div>-->
+		<!-- Header -->
+		<header id="header">
+			<div class="logo">
+				<a href="#" style="border-bottom: none"><img class="img-fluid" src="https://peng.com.tr/static/images/Chat-Icon.png"></a>
+			</div>
+			<div class="content">
+				<div id="main">
+					<article id="pong">
+						<ul class="actions stacked">
+							<li class=""><a href="#" onclick="openIntro('pongClassic')" class="button primary apibutton">Classic Pong</a></li>
+							<li class=""><a href="#" onclick="openIntro('pongFour')" class="button primary apibutton">OMG Pong</a></li>
+							<li class=""><a href="#" onclick="openIntro('pongTournamentForm')" class="button primary apibutton">Pong Tournament</a></li>
+						</ul>
+					</article>
+					<article id="pongTournamentForm">
+						<div class="container" >
+							<div class="row" style="height: 25em;">
+								<div class="col-12" id="pongParent">
+									<h3 class="major">Select Player Names</h3>
+									<form id="tournamentForm">
+										<div class="fields">
+											<div class="field half">
+												<input type="text" name="" id="Player1Name" value="Player1Name" placeholder="Player 1 Name">
+											</div>
+											<div class="field half">
+												<input type="text" name="" id="Player2Name" value="Player2Name" placeholder="Player 2 Name">
+											</div>
+											<div class="field half">
+												<input type="text" name="" id="Player3Name" value="Player3Name" placeholder="Player 3 Name">
+											</div>
+											<div class="field half">
+												<input type="text" name="" id="Player4Name" value="Player4Name" placeholder="Player 4 Name">
+											</div>
+											<div class="field half">
+												<input type="text" name="" id="Player5Name" value="Player5Name" placeholder="Player 5 Name">
+											</div>
+											<div class="field half">
+												<input type="text" name="" id="Player6Name" value="Player6Name" placeholder="Player 6 Name">
+											</div>
+											<div class="field half">
+												<input type="text" name="" id="Player7Name" value="Player7Name" placeholder="Player 7 Name">
+											</div>
+											<div class="field half">
+												<input type="text" name="" id="Player8Name" value="Player8Name" placeholder="Player 8 Name">
+											</div>
+										</div>
+										<ul class="actions">
+											<li style="width: 100%;"><input type="submit" style="width: 100%;" value="Start Tournament" class="primary apibutton"></li>
+										</ul>
+									</form>
+								</div>
+							</div>
+						</div>
+					</article>
+					<article id="pongTournament">
+						<div class="container" >
+							<div class="row" style="height: 25em;">
+								<div class="col-12" id="pongParent">
+									<div id="score">
+										<p style="margin: 0;"><span id="player1Name">Player 1</span>: <span id="player1-score">0</span> - <span id="player2Name">Player 2</span>: <span id="player2-score">0</span></p>
+									</div>
+									<canvas id="gameCanvasT" style="width: 100%; height: 95%;">Press 'Enter' to Start</canvas>
+								</div>
+							</div>
+						</div>
+					</article>
+					<article id="pongClassic">
+						<div class="container" >
+							<div class="row" style="height: 25em;">
+								<div class="col-12" id="pongParent">
+									<div id="score">
+										<span id="player1NameC">Player 1</span>: <span id="player1-scoreC">0</span> - <span id="player2NameC">Player 2</span>: <span id="player2-scoreC">0</span></p>
+									</div>
+									<canvas id="gameCanvas" style="width: 100%; height: 95%;">Press 'Enter' to Start</canvas>
+								</div>
+							</div>
+						</div>
+					</article>
+					<article id="pongFour">
+						<div class="container" >
+							<div class="row" style="height: 25em;">
+								<div class="col-12" id="pongParent">
+									<div id="score">
+										<p style="margin: 0;">Player 1: <span id="player1-scoreF">0</span> - Player 2: <span id="player2-scoreF">0</span> - Player 3: <span id="player3-scoreF">0</span> - Player 4: <span id="player4-scoreF">0</span></p>
+									</div>
+									<canvas id="gameCanvasF" style="width: 100%; height: 95%;">Press 'Enter' to Start</canvas>
+								</div>
+							</div>
+						</div>
+					</article>
+
+					<!-- Friend List-->
+					<article id="friends">
+						<div id="noFriend">
+							<h2 class="major">Friend List</h2>
+							<p>Looks like someone doesn't have any friends. <span style="font-size:2em">&#128546;</span></p>
+						</div>
+						
+						<div class="table-wrapper" id="friendTable" style="display: none;">
+							<table>
+								<thead>
+									<tr>
+										<th>Username</th>
+										<th>Online Status</th>
+									</tr>
+								</thead>
+								<tbody id="friendTableBody">
+									
+								</tbody>
+							</table>
+						</div>
+					</article>
+					<article id="matchHistory">
+						<div id="noMatch">
+							<h2 class="major">Match History</h2>
+							<p>No games found. Don't you want some fun?</p>
+						</div>
+						
+						<div class="table-wrapper" id="matchTable" style="display: none;">
+							<table>
+								<thead>
+									<tr>
+										<th>Winner</th>
+										<th>Date</th>
+										<th>Game Type</th>
+									</tr>
+								</thead>
+								<tbody id="matchTableBody">
+									
+								</tbody>
+							</table>
+						</div>
+					</article>
+					<!-- Contact-->
+
+					<article id="login">
+						<div class="container">
+							<div class="row d-flex justify-content-center">
+								<div class="col-4 d-flex justify-content-center"><h2>Login</h2></div>
+								<div class="col-4" style="max-width: 10em;">
+									<div class="checkbox_item citem_2">
+										<label class="checkbox_wrap">
+											<input type="checkbox" name="checkbox" class="checkbox_inp" id="loginSwitch">
+											<span class="checkbox_mark"></span>
+										</label>
+									</div>
+								</div>
+								<div class="col-4 d-flex justify-content-center"><h2>Register</h2></div>
+							</div>
+						</div>
+						<div class="container">
+							<div class="row">
+								<div class="col-12">
+									<div class="card " id="cardLogin">
+										<div class="login-card card__face card__face--front">
+											<div class="row d-flex justify-content-center">
+												<div class="col-12 d-flex justify-content-center"><h2 class="major">Login</h2></div>
+												<div class="col-12">
+													<form id="loginForm">
+														<div class="fields">
+															<div class="field">
+																<label for="email">Username</label>
+																<input type="text" name="username" id="usernameLogin" />
+															</div>
+															<div class="field">
+																<label for="password">Password</label>
+																<input type="password" name="password" id="passwordLogin" />
+															</div>
+														</div>
+														<ul class="actions">
+															<li class="loginbuttons" style="display: flex; justify-content: space-between;">
+																<input type="submit" value="Login" class="button apibutton">
+															</li>
+														</ul>
+														<ul class="actions stacked">
+															<li class=""><a href="#" class="button primary apibutton" id="login42"><img src="https://peng.com.tr/static/images/42icon.png" width="20vh"></a></li>
+														</ul>
+													</form>
+												</div>
+											</div>											
+										</div>
+										<div class="register-card card__face card__face--back">
+											<div class="row d-flex justify-content-center">
+												<div class="col-12 d-flex justify-content-center"><h2 class="major">Register</h2></div>
+												<div class="col-12">
+													<form id="signupForm">
+														<div class="fields">
+															<div class="field">
+																<label for="email">Username</label>
+																<input type="text" name="username" id="usernameRegister" />
+															</div>
+															<div class="field">
+																<label for="email">Full Name</label>
+																<input type="text" name="fullname" id="fullnameRegister" />
+															</div>
+															<div class="field">
+																<label for="email">Email</label>
+																<input type="text" name="email" id="emailRegister" />
+																<div id="errorEmail" class="error-message"></div>
+															</div>
+															<div class="field">
+																<label for="password">Password</label>
+																<input type="password" name="password" id="passwordRegister" />
+																<div id="errorPassword" class="error-message"></div>
+															</div>
+														</div>
+														<ul class="actions">
+															<li class="loginbuttons"><input type="submit" value="SignUp" class="button primary register"></li>
+														</ul>
+														<ul class="actions stacked">
+															<li class=""><a href="#" class="button primary apibutton" id="login42"><img src="https://peng.com.tr/static/images/42icon.png" width="20vh"></a></li>
+														</ul>
+													</form>
+												</div>
+											</div>	
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</article>
+					<article id="profile">
+						<div class="container">
+							<div class="row d-flex align-items-center">
+								<div class="col-md-6">
+									<img src="/static/pofiles/image/Default Profile Picture.jpg" height="200px" width="200px" class="img-fluid rounded-circle" id="profilePicture" alt="Profil Resmi">
+									
+								</div>
+								<div class="col-md-6" id="profileContent">
+									<h4 id="profileName">Ad Soyad</h4>
+									<ul class="alt">
+										<li>Tournuments: 0/0</li>
+										<li>Matches: 0/0</li>
+										<li>Friends: 0</li>
+										<li><ul class="actions stacked"><button type="submit" class="button primary login" id="addFriendButton">Add Friend</button></ul></li>
+										<li>
+											<ul class="actions stacked">
+											<li class="loginbuttons">
+												<a href="#" onclick="openIntro('profileSetting')"><button type="submit" value="Settings" class="button primary login">Settings</button></a>
+												<button type="submit" id="logOut" value="Logout" class="button login">Logout</button>
+	
+											</li>
+	
+										</ul></li>
+										<li><ul class="actions stacked"><button type="submit" class="button primary login" id="MatchHistory">MatchHistory</button></ul></li>
+
+									</ul>
+								</div>
+								
+							</div>
+						</div>
+						<div class="modal fade" id="addFriendModal" tabindex="9" role="dialog" aria-labelledby="addFriendModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+							  <div class="modal-content">
+								<div class="modal-header">
+								  <h5 class="modal-title" id="addFriendModalLabel">Add Friend</h5>
+								  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								  </button>
+								</div>
+								<div class="modal-body">
+									<div class="container">
+										<div class="row">
+											<div class="col-9"><input id="searchUserText" style="color:black" type="text" class="form-control mb-2" placeholder="Search"></div>
+								  			<div class="col-3"><button id="searchUser" type="button" class="btn btn-primary mb-2">Search</button></div>
+										</div>
+									</div>
+								  
+								  <table class="table" id="searchUserTable">
+								  </table>
+								  
+								</div>
+							  </div>
+							</div>
+						  </div>
+					</article>
+					<script>
+						// "Add Friend" butonuna tıklandığında pop-up modal'i açma işlemi
+						const addFriendButton = document.querySelector('#addFriendButton');
+						addFriendButton.addEventListener('click', function() {
+						  $('#addFriendModal').modal('show');
+						  $('.modal-backdrop').remove();
+						});
+						
+						// Pop-up modal kapatılacakken
+						$('#addFriendModal').on('hidden.bs.modal', function (e) {
+						  // Modal kapatıldığında textbox içeriğini sıfırla
+						  $(this).find('input[type="text"]').val('');
+						});
+					</script>
+					<article id="profileSetting">
+						<div class="container">
+							<div class="row">
+								<div class="col-12">
+									<form id="profileSettingForm">
+										<div class="fields">
+											<div class="field">
+												<label for="profilePicture">Profile Picture</label>
+												<input type="file" accept=".jpg, .jpeg, .png" name="profilePicture" id="profilePictureSetting">
+											</div>
+											<div class="field">
+												<label for="fullNameSetting">Full Name</label>
+												<input type="text" name="fullNameSetting" id="fullNameSetting">
+											</div>
+											<div class="field">
+												<label for="emailSetting">Email</label>
+												<input type="email" name="emailSetting" id="emailSetting">
+												<div id="errorEmailUpdate" class="error-message"></div>
+											</div>
+											<div class="field">
+												<label for="passwordSetting">Password</label>
+												<input type="password" name="passwordSetting" id="passwordSetting">
+												<div id="errorPasswordUpdate" class="error-message"></div>
+
+											</div>
+										</div>
+										<ul class="actions">
+											<li class="loginbuttons" style="display: flex; justify-content: space-between;">
+												<button type="submit" class="button register primary">Save</button>
+											</li>
+										</ul>
+									</form>
+								</div>
+							</div>
+						</div>
+					</article>
+				</div>
+			</div>
+			<nav>
+				<ul>
+					<li><a href="#" onclick="openIntro('pong')">Pong</a></li>
+					<li id="menuFriendList" ><a href="#" onclick="openIntro('friends')">Friends</a></li>
+					<li id="menuLogin"><a href="#" onclick="openIntro('login')">Login</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<!-- Main -->
+		<div class="main" style="display: none;">
+
+			<!-- Elements -->
+			<article id="elements">
+				<h2 class="major">Elements</h2>
+
+				<section>
+					<h3 class="major">Text</h3>
+					<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is
+						<em>emphasized</em>.
+						This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
+						This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a
+							href="#">this is a link</a>.
+					</p>
+					<hr />
+					<h2>Heading Level 2</h2>
+					<h3>Heading Level 3</h3>
+					<h4>Heading Level 4</h4>
+					<h5>Heading Level 5</h5>
+					<h6>Heading Level 6</h6>
+					<hr />
+					<h4>Blockquote</h4>
+					<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus
+						euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis
+						iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem
+						ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
+					<h4>Preformatted</h4>
+					<pre><code>i = 0;
+
+while (!deck.isInOrder()) {
+    print 'Iteration ' + i;
+    deck.shuffle();
+    i++;
+}
+
+print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
+				</section>
+
+				<section>
+					<h3 class="major">Lists</h3>
+
+					<h4>Unordered</h4>
+					<ul>
+						<li>Dolor pulvinar etiam.</li>
+						<li>Sagittis adipiscing.</li>
+						<li>Felis enim feugiat.</li>
+					</ul>
+
+					<h4>Alternate</h4>
+					<ul class="alt">
+						<li>Dolor pulvinar etiam.</li>
+						<li>Sagittis adipiscing.</li>
+						<li>Felis enim feugiat.</li>
+					</ul>
+
+					<h4>Ordered</h4>
+					<ol>
+						<li>Dolor pulvinar etiam.</li>
+						<li>Etiam vel felis viverra.</li>
+						<li>Felis enim feugiat.</li>
+						<li>Dolor pulvinar etiam.</li>
+						<li>Etiam vel felis lorem.</li>
+						<li>Felis enim et feugiat.</li>
+					</ol>
+					<h4>Icons</h4>
+					<ul class="icons">
+						<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+						<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+						<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
+					</ul>
+
+					<h4>Actions</h4>
+					<ul class="actions">
+						<li><a href="#" class="button primary">Default</a></li>
+						<li><a href="#" class="button">Default</a></li>
+					</ul>
+					<ul class="actions stacked">
+						<li><a href="#" class="button primary">Default</a></li>
+						<li><a href="#" class="button">Default</a></li>
+					</ul>
+				</section>
+
+				<section>
+					<h3 class="major">Table</h3>
+					<h4>Default</h4>
+					<div class="table-wrapper">
+						<table>
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Description</th>
+									<th>Price</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Item One</td>
+									<td>Ante turpis integer aliquet porttitor.</td>
+									<td>29.99</td>
+								</tr>
+								<tr>
+									<td>Item Two</td>
+									<td>Vis ac commodo adipiscing arcu aliquet.</td>
+									<td>19.99</td>
+								</tr>
+								<tr>
+									<td>Item Three</td>
+									<td> Morbi faucibus arcu accumsan lorem.</td>
+									<td>29.99</td>
+								</tr>
+								<tr>
+									<td>Item Four</td>
+									<td>Vitae integer tempus condimentum.</td>
+									<td>19.99</td>
+								</tr>
+								<tr>
+									<td>Item Five</td>
+									<td>Ante turpis integer aliquet porttitor.</td>
+									<td>29.99</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="2"></td>
+									<td>100.00</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+
+					<h4>Alternate</h4>
+					<div class="table-wrapper">
+						<table class="alt">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Description</th>
+									<th>Price</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Item One</td>
+									<td>Ante turpis integer aliquet porttitor.</td>
+									<td>29.99</td>
+								</tr>
+								<tr>
+									<td>Item Two</td>
+									<td>Vis ac commodo adipiscing arcu aliquet.</td>
+									<td>19.99</td>
+								</tr>
+								<tr>
+									<td>Item Three</td>
+									<td> Morbi faucibus arcu accumsan lorem.</td>
+									<td>29.99</td>
+								</tr>
+								<tr>
+									<td>Item Four</td>
+									<td>Vitae integer tempus condimentum.</td>
+									<td>19.99</td>
+								</tr>
+								<tr>
+									<td>Item Five</td>
+									<td>Ante turpis integer aliquet porttitor.</td>
+									<td>29.99</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="2"></td>
+									<td>100.00</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</section>
+
+				<section>
+					<h3 class="major">Buttons</h3>
+					<ul class="actions">
+						<li><a href="#" class="button primary">Primary</a></li>
+						<li><a href="#" class="button">Default</a></li>
+					</ul>
+					<ul class="actions">
+						<li><a href="#" class="button">Default</a></li>
+						<li><a href="#" class="button small">Small</a></li>
+					</ul>
+					<ul class="actions">
+						<li><a href="#" class="button primary icon fa-download">Icon</a></li>
+						<li><a href="#" class="button icon fa-download">Icon</a></li>
+					</ul>
+					<ul class="actions">
+						<li><span class="button primary disabled">Disabled</span></li>
+						<li><span class="button disabled">Disabled</span></li>
+					</ul>
+				</section>
+
+				<section>
+					<h3 class="major">Form</h3>
+					<form method="post" action="#">
+						<div class="fields">
+							<div class="field half">
+								<label for="demo-name">Name</label>
+								<input type="text" name="demo-name" id="demo-name" value="" placeholder="Jane Doe" />
+							</div>
+							<div class="field half">
+								<label for="demo-email">Email</label>
+								<input type="email" name="demo-email" id="demo-email" value=""
+									placeholder="jane@untitled.tld" />
+							</div>
+							<div class="field">
+								<label for="demo-category">Category</label>
+								<select name="demo-category" id="demo-category">
+									<option value="">-</option>
+									<option value="1">Manufacturing</option>
+									<option value="1">Shipping</option>
+									<option value="1">Administration</option>
+									<option value="1">Human Resources</option>
+								</select>
+							</div>
+							<div class="field half">
+								<input type="radio" id="demo-priority-low" name="demo-priority" checked>
+								<label for="demo-priority-low">Low</label>
+							</div>
+							<div class="field half">
+								<input type="radio" id="demo-priority-high" name="demo-priority">
+								<label for="demo-priority-high">High</label>
+							</div>
+							<div class="field half">
+								<input type="checkbox" id="demo-copy" name="demo-copy">
+								<label for="demo-copy">Email me a copy</label>
+							</div>
+							<div class="field half">
+								<input type="checkbox" id="demo-human" name="demo-human" checked>
+								<label for="demo-human">Not a robot</label>
+							</div>
+							<div class="field">
+								<label for="demo-message">Message</label>
+								<textarea name="demo-message" id="demo-message" placeholder="Enter your message"
+									rows="6"></textarea>
+							</div>
+						</div>
+						<ul class="actions">
+							<li><input type="submit" value="Send Message" class="primary" /></li>
+							<li><input type="reset" value="Reset" /></li>
+						</ul>
+					</form>
+				</section>
+
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<p class="copyright">&copy; Design by<a href="#">Penguins</a>.</p>
+		</footer>
+
+	</div>
+
+	<!-- BG -->
+	<div id="bg"></div>
+
+	<!-- Scripts -->
+	<script>
+		function flip() {
+			card.classList.toggle('is-flipped');
+			console.log("isflipped");
+		}
+		var loginSwitch = document.getElementById("loginSwitch");
+		var card = document.getElementById("cardLogin");
+		loginSwitch.addEventListener('change', (event) => {
+			card.classList.toggle('is-flipped');
+})
+	
+
+		// document.addEventListener("onload", (e) => function(){
+		// 	if(window.location.pathname != "#")
+		// 		window.location.href = "https://peng.com.tr/404";
+		// });
+	</script>
+	<script src="/static/assets/js/jquery.min.js"></script>
+	<script src="/static/assets/js/browser.min.js"></script>
+	<script src="/static/assets/js/breakpoints.min.js"></script>
+	<script src="/static/assets/js/util.js"></script>
+	<script src="/static/assets/js/pong.js"></script>
+	<script src="/static/assets/js/pongfour.js"></script>
+	<script src="/static/assets/js/tournament.js"></script>
+	<script src="/static/assets/js/main.js"></script>
+
+</body>
+
+</html>
