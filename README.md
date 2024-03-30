@@ -1,4 +1,4 @@
-[Preview](Docs/Peng.mov)
+<div><video src="https://github.com/Clas0512/ft_transcendence/assets/97125451/fc29e94b-d516-433a-a1b9-923f33928338" controls autoplay muted></video></div>
 
 # Django ve Docker İle Geliştirdiğim Single Page Web Uygulaması Projesi
 
